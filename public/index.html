@@ -16,7 +16,7 @@ const recipes=[
 {title:'Rusztikus bogyós pite',cat:'Desszert',time:55,image:'pite.jpg',servings:'6 szelet',ingredients:['1 csomag omlós pitetészta (kb. 250 g)','350 g vegyes bogyós gyümölcs','2 ek cukor','1 ek étkezési keményítő','1 tojás a kenéshez'],steps:['Melegítsd elő a sütőt 190 °C-ra. Terítsd ki a tésztát sütőpapírra.','Keverd össze a gyümölcsöt a cukorral és a keményítővel. Halmozd a tészta közepére, körben hagyj 4 cm szabad peremet.','Hajtsd a peremet a töltelékre, kend meg felvert tojással, és süsd 30–35 percig, amíg aranybarna. Szeletelés előtt hagyd hűlni.']}
 ];
 const cards=document.querySelector('#cards'), dialog=document.querySelector('#recipe'), details=document.querySelector('#details');
-cards.innerHTML=recipes.map((r,i)=>`<article class="card" data-category="${r.cat}"><img src="${r.image}" alt="" loading="lazy"><div><small>${r.cat} · ${r.time} perc</small><h3>${r.title}</h3><button type="button" data-recipe="${i}">Recept megnyitása →</button></div></article>`).join('');
+cards.innerHTML=recipes.slice(1).map((r,i)=>`<article class="card" data-category="${r.cat}"><img src="${r.image}" alt="" loading="lazy"><div><small>${r.cat} · ${r.time} perc</small><h3>${r.title}</h3><button type="button" data-recipe="${i+1}">Recept megnyitása →</button></div></article>`).join('');
 document.querySelector('main').addEventListener('click',event=>{
  const button=event.target.closest('[data-recipe]');
  if(!button)return;
