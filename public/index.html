@@ -5,7 +5,7 @@
 </style>
 <header><nav aria-label="Főmenü"><a href="#" class="brand">A Chef asztala</a><div><a href="#receptek">Receptek</a><a href="#chef">A Chef</a></div></nav></header>
 <main><div class="hero"><article><span class="kicker">Chef &amp; receptnapló</span><h1>A Chef<br><em>asztala</em></h1><p>Szezonális fogások, otthon is elkészíthető receptek.</p><button class="cta" type="button" data-recipe="0">Megnézem a receptet →</button></article><img src="tempurahal.webp" alt="Két tempurabundás halfilé friss salátával és citrommal"></div>
-<section class="wrap" id="receptek"><span class="kicker">A receptnaplóból</span><h2>Mit főzünk ma?</h2><div class="filters" aria-label="Receptszűrő"><button type="button" data-cat="" aria-pressed="true">Mind</button><button type="button" data-cat="Főétel" aria-pressed="false">Főételek</button><button type="button" data-cat="Saláta" aria-pressed="false">Saláták</button><button type="button" data-cat="Desszert" aria-pressed="false">Desszertek</button></div><div class="grid" id="cards"></div></section>
+<section class="wrap" id="receptek"><span class="kicker">A receptnaplóból</span><h2>Mit főzünk ma?</h2><div class="filters" aria-label="Receptszűrő"><button type="button" data-cat="" aria-pressed="true">Mind</button><button type="button" data-cat="Főétel" aria-pressed="false">Főételek</button><button type="button" data-cat="Saláta" aria-pressed="false">Saláták</button><button type="button" data-cat="Desszert" aria-pressed="false">Desszertek</button><button type="button" data-cat="gyors" aria-pressed="false">30 perc alatt</button></div><div class="grid" id="cards"></div></section>
 <section class="about" id="chef"><div class="wrap split"><img src="chef.jpg" alt="Chef munka közben egy konyhában" loading="lazy"><div><span class="kicker">Kristóf Chef</span><h2>A konyhában<br>otthon vagyok.</h2><p>Abban hiszek, hogy egy jó étel a piacon kezdődik. Megnézem, minek van szezonja, és abból indulok ki. Egy marék friss zöldfűszer, egy jól megpirított zöldség vagy pár csepp citrom sokszor éppen elég ahhoz, hogy összeálljon a fogás.</p><p>Itt azokat a recepteket gyűjtöm, amelyekhez szívesen visszatérek egy hétköznap este is. Olyan szezonális fogásokat mutatok, amelyeket otthon, könnyen beszerezhető alapanyagokból is elkészíthetsz.</p></div></div></section></main>
 <footer>A Chef asztala · Chef és receptek</footer>
 <dialog id="recipe" aria-labelledby="recipe-title"><form method="dialog"><button autofocus>Bezárás ×</button></form><div id="details"></div></dialog>
@@ -17,7 +17,7 @@ const recipes=[
 {title:'Rusztikus bogyós pite',cat:'Desszert',time:55,image:'pite.jpg',tip:'Szeletelés előtt hagyd langyosra hűlni a pitét, hogy a gyümölcsös töltelék besűrűsödjön.',servings:'6 szelet',ingredients:['1 csomag omlós pitetészta (kb. 250 g)','350 g vegyes bogyós gyümölcs','2 ek cukor','1 ek étkezési keményítő','1 tojás a kenéshez'],steps:['Melegítsd elő a sütőt 190 °C-ra. Terítsd ki a tésztát sütőpapírra.','Keverd össze a gyümölcsöt a cukorral és a keményítővel. Halmozd a tészta közepére, körben hagyj 4 cm szabad peremet.','Hajtsd a peremet a töltelékre, kend meg felvert tojással, és süsd 30–35 percig, amíg aranybarna. Szeletelés előtt hagyd hűlni.']}
 ];
 const cards=document.querySelector('#cards'), dialog=document.querySelector('#recipe'), details=document.querySelector('#details');
-cards.innerHTML=recipes.slice(1).map((r,i)=>`<article class="card" data-category="${r.cat}"><img src="${r.image}" alt="" loading="lazy"><div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i+1}">Recept megnyitása →</button></div></article>`).join('');
+cards.innerHTML=recipes.slice(1).map((r,i)=>`<article class="card" data-category="${r.cat}" data-time="${r.time}"><img src="${r.image}" alt="" loading="lazy"><div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i+1}">Recept megnyitása →</button></div></article>`).join('');
 document.querySelector('main').addEventListener('click',event=>{
  const button=event.target.closest('[data-recipe]');
  if(!button)return;
@@ -28,6 +28,9 @@ document.querySelector('main').addEventListener('click',event=>{
 const filters=document.querySelectorAll('[data-cat]');
 filters.forEach(button=>button.addEventListener('click',()=>{
  filters.forEach(filter=>filter.setAttribute('aria-pressed',String(button===filter)));
- Array.from(cards.children).forEach(card=>{card.hidden=Boolean(button.dataset.cat&&card.dataset.category!==button.dataset.cat);});
+ const category=button.dataset.cat;
+ Array.from(cards.children).forEach(card=>{
+  card.hidden=category==='gyors' ? Number(card.dataset.time)>30 : Boolean(category&&card.dataset.category!==category);
+ });
 }));
 </script></html>
