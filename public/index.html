@@ -4,6 +4,7 @@
 .chef-tip{margin-top:24px;padding:16px 20px;background:#e6e9dc;border-left:3px solid #667063}.chef-tip p{margin:8px 0 0}
 .ingredients{list-style:none;padding:0}.ingredients label{display:flex;align-items:center;gap:.65rem;min-height:44px;cursor:pointer}.ingredients input{margin:0;width:1.2rem;height:1.2rem;flex:none;accent-color:#243126}.ingredients input:checked+span{color:#5d685c;text-decoration:line-through}
 .recipe-search{display:block;margin-top:1rem;font-weight:700}.recipe-search input{display:block;width:min(100%,26rem);min-height:44px;margin-top:.4rem;padding:.65rem .8rem;font:inherit;color:inherit;background:#fff;border:1px solid #667063;border-radius:.45rem}
+.recipe-jumps{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}.recipe-jumps button{min-height:44px}#details h3[id^="jump-"]{scroll-margin-top:1rem}
 </style>
 <header><nav aria-label="Főmenü"><a href="#" class="brand">A Chef asztala</a><div><a href="#receptek">Receptek</a><a href="#menu">Menü</a><a href="#chef">A Chef</a></div></nav></header>
 <main><div class="hero"><article><span class="kicker">Chef &amp; receptnapló</span><h1>A Chef<br><em>asztala</em></h1><p>Szezonális fogások, otthon is elkészíthető receptek.</p><button class="cta" type="button" data-recipe="0">Megnézem a receptet →</button></article><img src="tempurahal.webp" alt="Két tempurabundás halfilé friss salátával és citrommal"></div>
@@ -42,7 +43,12 @@ function scaleQuantity(value,multiplier){
 }
 function openRecipe(r){
  if(!r)return;
- details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3>Hozzávalók</h3><label>Mennyiség <select data-portions><option value="1">Alapadag</option><option value="2">Dupla adag</option><option value="3">Tripla adag</option></select></label><p data-portion-count role="status"></p><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3>Elkészítés</h3><ol data-recipe-steps>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3>Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+ details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><div class="recipe-jumps" role="group" aria-label="Ugrás a receptben"><button type="button" data-jump="jump-ingredients">Hozzávalók</button><button type="button" data-jump="jump-steps">Elkészítés</button><button type="button" data-jump="jump-tip">Kristóf tippje</button></div><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3 id="jump-ingredients" tabindex="-1">Hozzávalók</h3><label>Mennyiség <select data-portions><option value="1">Alapadag</option><option value="2">Dupla adag</option><option value="3">Tripla adag</option></select></label><p data-portion-count role="status"></p><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3 id="jump-steps" tabindex="-1">Elkészítés</h3><ol data-recipe-steps>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3 id="jump-tip" tabindex="-1">Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+ details.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{
+  const heading=document.getElementById(button.dataset.jump);
+  heading.focus({preventScroll:true});
+  heading.scrollIntoView({block:'start'});
+ }));
  const portion=details.querySelector('[data-portions]');
  const ingredientLabels=details.querySelectorAll('.ingredients span');
  const steps=details.querySelectorAll('[data-recipe-steps] li');
