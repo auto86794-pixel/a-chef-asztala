@@ -5,11 +5,12 @@
 .ingredients{list-style:none;padding:0}.ingredients label{display:flex;align-items:center;gap:.65rem;min-height:44px;cursor:pointer}.ingredients input{margin:0;width:1.2rem;height:1.2rem;flex:none;accent-color:#243126}.ingredients input:checked+span{color:#5d685c;text-decoration:line-through}
 .recipe-search{display:block;margin-top:1rem;font-weight:700}.recipe-search input{display:block;width:min(100%,26rem);min-height:44px;margin-top:.4rem;padding:.65rem .8rem;font:inherit;color:inherit;background:#fff;border:1px solid #667063;border-radius:.45rem}
 .recipe-jumps{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1rem}.recipe-jumps button{min-height:44px}#details h3[id^="jump-"]{scroll-margin-top:1rem}
+#menu-list-text{display:block;width:100%;margin-bottom:1rem;font:inherit}
 </style>
 <header><nav aria-label="Főmenü"><a href="#" class="brand">A Chef asztala</a><div><a href="#receptek">Receptek</a><a href="#menu">Menü</a><a href="#chef">A Chef</a></div></nav></header>
 <main><div class="hero"><article><span class="kicker">Chef &amp; receptnapló</span><h1>A Chef<br><em>asztala</em></h1><p>Szezonális fogások, otthon is elkészíthető receptek.</p><button class="cta" type="button" data-recipe="0">Megnézem a receptet →</button></article><img src="tempurahal.webp" alt="Két tempurabundás halfilé friss salátával és citrommal"></div>
 <section class="wrap" id="receptek"><span class="kicker">A receptnaplóból</span><h2>Mit főzünk ma?</h2><label class="recipe-search">Recept keresése<input id="recipe-search" type="search" placeholder="Pl. gomba vagy citrom"></label><div class="filters" aria-label="Receptszűrő"><button type="button" data-cat="" aria-pressed="true">Mind</button><button type="button" data-cat="Leves" aria-pressed="false">Levesek</button><button type="button" data-cat="Főétel" aria-pressed="false">Főételek</button><button type="button" data-cat="Saláta" aria-pressed="false">Saláták</button><button type="button" data-cat="Desszert" aria-pressed="false">Desszertek</button><button type="button" data-cat="gyors" aria-pressed="false">30 perc alatt</button></div><p id="recipe-results" role="status" hidden></p><div class="grid" id="cards"></div></section>
-<section class="wrap" id="menu"><span class="kicker">Őszi vasárnapi ebéd</span><h2>Kristóf menüje</h2><p>Pirított tökmagos leves, almás-mustáros karaj és omlós linzer a kávé mellé.</p><div class="grid"><article class="card"><img src="sutotokkremleves.jpg" alt="" loading="lazy"><div><small>Leves</small><h3>Sült sütőtökkrémleves pirított tökmaggal</h3><button type="button" data-recipe="11" aria-label="Recept megnyitása: Sült sütőtökkrémleves pirított tökmaggal">Recept megnyitása →</button></div></article><article class="card"><img src="almas-mustaros-karaj.jpg" alt="" loading="lazy"><div><small>Főétel</small><h3>Almás-mustáros sertéskaraj tepsis burgonyával</h3><button type="button" data-recipe="12" aria-label="Recept megnyitása: Almás-mustáros sertéskaraj tepsis burgonyával">Recept megnyitása →</button></div></article><article class="card"><img src="linzer.jpg" alt="" loading="lazy"><div><small>Desszert</small><h3>Kajszibaracklekváros linzer</h3><button type="button" data-recipe="10" aria-label="Recept megnyitása: Kajszibaracklekváros linzer">Recept megnyitása →</button></div></article></div><aside class="chef-tip"><h3>Mit készíts elő, és mit hagyj a végére?</h3><ol><li><strong>Előző nap</strong> · Süsd meg és töltsd meg a linzert.</li><li><strong>Ebéd előtt</strong> · Készítsd el a levest, tálalás előtt pedig melegítsd át. A pirított tökmagot a végén szórd rá.</li><li><strong>Tálalás előtt</strong> · Tedd be a burgonyát a sütőbe. Amíg sül, készítsd el a karajt és az almás-mustáros szaftot. A főételt frissen tálald.</li></ol></aside></section>
+<section class="wrap" id="menu"><span class="kicker">Őszi vasárnapi ebéd</span><h2>Kristóf menüje</h2><p>Pirított tökmagos leves, almás-mustáros karaj és omlós linzer a kávé mellé.</p><button type="button" id="copy-menu-list">Menü bevásárlólistájának másolása</button><p id="menu-list-status" role="status"></p><textarea id="menu-list-text" aria-label="A menü bevásárlólistája" rows="9" readonly hidden></textarea><div class="grid"><article class="card"><img src="sutotokkremleves.jpg" alt="" loading="lazy"><div><small>Leves</small><h3>Sült sütőtökkrémleves pirított tökmaggal</h3><button type="button" data-recipe="11" aria-label="Recept megnyitása: Sült sütőtökkrémleves pirított tökmaggal">Recept megnyitása →</button></div></article><article class="card"><img src="almas-mustaros-karaj.jpg" alt="" loading="lazy"><div><small>Főétel</small><h3>Almás-mustáros sertéskaraj tepsis burgonyával</h3><button type="button" data-recipe="12" aria-label="Recept megnyitása: Almás-mustáros sertéskaraj tepsis burgonyával">Recept megnyitása →</button></div></article><article class="card"><img src="linzer.jpg" alt="" loading="lazy"><div><small>Desszert</small><h3>Kajszibaracklekváros linzer</h3><button type="button" data-recipe="10" aria-label="Recept megnyitása: Kajszibaracklekváros linzer">Recept megnyitása →</button></div></article></div><aside class="chef-tip"><h3>Mit készíts elő, és mit hagyj a végére?</h3><ol><li><strong>Előző nap</strong> · Süsd meg és töltsd meg a linzert.</li><li><strong>Ebéd előtt</strong> · Készítsd el a levest, tálalás előtt pedig melegítsd át. A pirított tökmagot a végén szórd rá.</li><li><strong>Tálalás előtt</strong> · Tedd be a burgonyát a sütőbe. Amíg sül, készítsd el a karajt és az almás-mustáros szaftot. A főételt frissen tálald.</li></ol></aside></section>
 <section class="about" id="chef"><div class="wrap split"><img src="chef.jpg" alt="Chef munka közben egy konyhában" loading="lazy"><div><span class="kicker">Kristóf Chef</span><h2>A konyhában<br>otthon vagyok.</h2><p>Abban hiszek, hogy egy jó étel a piacon kezdődik. Megnézem, minek van szezonja, és abból indulok ki. Egy marék friss zöldfűszer, egy jól megpirított zöldség vagy pár csepp citrom sokszor éppen elég ahhoz, hogy összeálljon a fogás.</p><p>Itt azokat a recepteket gyűjtöm, amelyekhez szívesen visszatérek egy hétköznap este is. Olyan szezonális fogásokat mutatok, amelyeket otthon, könnyen beszerezhető alapanyagokból is elkészíthetsz.</p></div></div></section></main>
 <footer>A Chef asztala · Chef és receptek</footer>
 <dialog id="recipe" aria-labelledby="recipe-title"><form method="dialog"><button autofocus>Bezárás ×</button></form><div id="details"></div></dialog>
@@ -115,6 +116,25 @@ function openRecipe(r){
 document.querySelector('main').addEventListener('click',event=>{
  const button=event.target.closest('[data-recipe]');
  if(button)openRecipe(recipes[Number(button.dataset.recipe)]);
+});
+const menu=document.querySelector('#menu');
+menu.querySelector('#copy-menu-list').addEventListener('click',async()=>{
+ const menuRecipes=Array.from(menu.querySelectorAll('[data-recipe]'),button=>recipes[Number(button.dataset.recipe)]);
+ const list=['Kristóf őszi vasárnapi menüje',...menuRecipes.map(recipe=>
+  [recipe.title+' · '+(recipe.servings??'2 adag'),...recipe.ingredients.map(item=>'• '+item)].join('\n')
+ )].join('\n\n');
+ const status=menu.querySelector('#menu-list-status');
+ try {
+  await navigator.clipboard.writeText(list);
+  status.textContent='A menü bevásárlólistája a vágólapra került.';
+ } catch {
+  const field=menu.querySelector('#menu-list-text');
+  field.value=list;
+  field.hidden=false;
+  field.focus();
+  field.select();
+  status.textContent='Másold ki a kijelölt bevásárlólistát.';
+ }
 });
 function openLinkedRecipe(){
  const prefix='#recept=';
