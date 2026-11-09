@@ -31,9 +31,30 @@ const recipes=[
 const cards=document.querySelector('#cards'), dialog=document.querySelector('#recipe'), details=document.querySelector('#details');
 cards.innerHTML=recipes.map((r,i)=>`<article class="card" data-category="${r.cat}" data-time="${r.time}">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i}">Recept megnyitása →</button></div></article>`).join('');
 const recipeSlug=recipe=>recipe.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const quantityFormat=new Intl.NumberFormat('hu-HU',{maximumFractionDigits:2});
+const fractions={'½':0.5,'¼':0.25,'¾':0.75};
+function scaleQuantity(value,multiplier){
+ if(multiplier===1)return value;
+ return value.replace(/\d+(?:,\d+)?|[½¼¾]/g,number=>{
+  const scaled=(fractions[number]??Number(number.replace(',','.')))*multiplier;
+  return quantityFormat.format(scaled);
+ });
+}
 function openRecipe(r){
  if(!r)return;
- details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3>Hozzávalók</h3><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3>Elkészítés</h3><ol>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3>Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+ details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3>Hozzávalók</h3><label>Mennyiség <select data-portions><option value="1">Alapadag</option><option value="2">Dupla adag</option><option value="3">Tripla adag</option></select></label><p data-portion-count role="status"></p><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3>Elkészítés</h3><ol data-recipe-steps>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3>Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+ const portion=details.querySelector('[data-portions]');
+ const ingredientLabels=details.querySelectorAll('.ingredients span');
+ const steps=details.querySelectorAll('[data-recipe-steps] li');
+ portion.addEventListener('change',()=>{
+  const multiplier=Number(portion.value);
+  ingredientLabels.forEach((label,i)=>{label.textContent=scaleQuantity(r.ingredients[i],multiplier);});
+  steps.forEach((step,i)=>{
+   step.textContent=r.steps[i].replace(/\b\d+(?:,\d+)?(?= (?:ml|dl|g|evőkanál|teáskanál|korongot)\b)/g,number=>scaleQuantity(number,multiplier));
+  });
+  const count=details.querySelector('[data-portion-count]');
+  count.textContent=multiplier===1 ? '' : scaleQuantity(r.servings??'2 adag',multiplier)+' · Nagyobb mennyiségnél szükség szerint dolgozz több részletben.';
+ });
  const key='chef-ingredients:'+r.title;
  const boxes=Array.from(details.querySelectorAll('.ingredients input'));
  let checked=[];
