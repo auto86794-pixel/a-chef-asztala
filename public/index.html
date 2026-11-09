@@ -43,7 +43,7 @@ function scaleQuantity(value,multiplier){
 }
 function openRecipe(r){
  if(!r)return;
- details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><div class="recipe-jumps" role="group" aria-label="Ugrás a receptben"><button type="button" data-jump="jump-ingredients">Hozzávalók</button><button type="button" data-jump="jump-steps">Elkészítés</button><button type="button" data-jump="jump-tip">Kristóf tippje</button></div><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3 id="jump-ingredients" tabindex="-1">Hozzávalók</h3><label>Mennyiség <select data-portions><option value="1">Alapadag</option><option value="2">Dupla adag</option><option value="3">Tripla adag</option></select></label><p data-portion-count role="status"></p><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3 id="jump-steps" tabindex="-1">Elkészítés</h3><ol data-recipe-steps>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3 id="jump-tip" tabindex="-1">Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+ details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><div class="recipe-jumps" role="group" aria-label="Ugrás a receptben"><button type="button" data-jump="jump-ingredients">Hozzávalók</button><button type="button" data-jump="jump-steps">Elkészítés</button><button type="button" data-jump="jump-tip">Kristóf tippje</button></div><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><button type="button" data-copy-list>Bevásárlólista másolása</button><p role="status" data-list-status></p><textarea aria-label="Bevásárlólista" data-list-text readonly hidden></textarea><h3 id="jump-ingredients" tabindex="-1">Hozzávalók</h3><label>Mennyiség <select data-portions><option value="1">Alapadag</option><option value="2">Dupla adag</option><option value="3">Tripla adag</option></select></label><p data-portion-count role="status"></p><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3 id="jump-steps" tabindex="-1">Elkészítés</h3><ol data-recipe-steps>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3 id="jump-tip" tabindex="-1">Kristóf tippje</h3><p>${r.tip}</p></aside>`;
  details.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{
   const heading=document.getElementById(button.dataset.jump);
   heading.focus({preventScroll:true});
@@ -81,7 +81,8 @@ function openRecipe(r){
  });
  details.querySelector('[data-copy-recipe]').addEventListener('click',async()=>{
   const url=new URL(location.href);
-  url.hash='recept='+recipeSlug(r);
+  url.pathname='/receptek/'+recipeSlug(r)+'/';
+  url.hash='';
   const status=details.querySelector('[data-copy-status]');
   try {
    await navigator.clipboard.writeText(url.href);
@@ -94,7 +95,22 @@ function openRecipe(r){
    status.textContent='Jelöld ki és másold a receptlinket.';
   }
  });
- if(!dialog.open)dialog.showModal();
+ details.querySelector('[data-copy-list]').addEventListener('click',async()=>{
+  const list=[r.title,...Array.from(ingredientLabels,label=>'• '+label.textContent)].join('\n');
+  const status=details.querySelector('[data-list-status]');
+  try {
+   await navigator.clipboard.writeText(list);
+   status.textContent='A bevásárlólista a vágólapra került.';
+  } catch {
+   const field=details.querySelector('[data-list-text]');
+   field.value=list;
+   field.hidden=false;
+   field.focus();
+   field.select();
+   status.textContent='Másold ki a kijelölt bevásárlólistát.';
+  }
+ });
+ if(dialog&&!dialog.open)dialog.showModal();
 }
 document.querySelector('main').addEventListener('click',event=>{
  const button=event.target.closest('[data-recipe]');
