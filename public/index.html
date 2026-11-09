@@ -9,7 +9,7 @@
 </style>
 <header><nav aria-label="Főmenü"><a href="#" class="brand">A Chef asztala</a><div><a href="#receptek">Receptek</a><a href="#menu">Menü</a><a href="#chef">A Chef</a></div></nav></header>
 <main><div class="hero"><article><span class="kicker">Chef &amp; receptnapló</span><h1>A Chef<br><em>asztala</em></h1><p>Szezonális fogások, otthon is elkészíthető receptek.</p><button class="cta" type="button" data-recipe="0">Megnézem a receptet →</button></article><img src="tempurahal.webp" alt="Két tempurabundás halfilé friss salátával és citrommal"></div>
-<section class="wrap" id="receptek"><span class="kicker">A receptnaplóból</span><h2>Mit főzünk ma?</h2><label class="recipe-search">Recept keresése<input id="recipe-search" type="search" placeholder="Pl. gomba vagy citrom"></label><div class="filters" aria-label="Receptszűrő"><button type="button" data-cat="" aria-pressed="true">Mind</button><button type="button" data-cat="Leves" aria-pressed="false">Levesek</button><button type="button" data-cat="Főétel" aria-pressed="false">Főételek</button><button type="button" data-cat="Saláta" aria-pressed="false">Saláták</button><button type="button" data-cat="Desszert" aria-pressed="false">Desszertek</button><button type="button" data-cat="gyors" aria-pressed="false">30 perc alatt</button></div><p id="recipe-results" role="status" hidden></p><div class="grid" id="cards"></div></section>
+<section class="wrap" id="receptek"><span class="kicker">A receptnaplóból</span><h2>Mit főzünk ma?</h2><label class="recipe-search">Recept keresése<input id="recipe-search" type="search" placeholder="Pl. gomba vagy citrom"></label><div class="filters" aria-label="Receptszűrő"><button type="button" data-cat="" aria-pressed="true">Mind</button><button type="button" data-cat="Leves" aria-pressed="false">Levesek</button><button type="button" data-cat="Főétel" aria-pressed="false">Főételek</button><button type="button" data-cat="Saláta" aria-pressed="false">Saláták</button><button type="button" data-cat="Desszert" aria-pressed="false">Desszertek</button><button type="button" data-cat="gyors" aria-pressed="false">30 perc alatt</button><button type="button" data-cat="mentett" aria-pressed="false">Mentett receptek</button></div><p id="recipe-results" role="status" hidden></p><div class="grid" id="cards"></div></section>
 <section class="wrap" id="menu"><span class="kicker">Őszi vasárnapi ebéd</span><h2>Kristóf menüje</h2><p>Pirított tökmagos leves, almás-mustáros karaj és omlós linzer a kávé mellé.</p><button type="button" id="copy-menu-list">Menü bevásárlólistájának másolása</button><p id="menu-list-status" role="status"></p><textarea id="menu-list-text" aria-label="A menü bevásárlólistája" rows="9" readonly hidden></textarea><div class="grid"><article class="card"><img src="sutotokkremleves.jpg" alt="" loading="lazy"><div><small>Leves</small><h3>Sült sütőtökkrémleves pirított tökmaggal</h3><button type="button" data-recipe="11" aria-label="Recept megnyitása: Sült sütőtökkrémleves pirított tökmaggal">Recept megnyitása →</button></div></article><article class="card"><img src="almas-mustaros-karaj.jpg" alt="" loading="lazy"><div><small>Főétel</small><h3>Almás-mustáros sertéskaraj tepsis burgonyával</h3><button type="button" data-recipe="12" aria-label="Recept megnyitása: Almás-mustáros sertéskaraj tepsis burgonyával">Recept megnyitása →</button></div></article><article class="card"><img src="linzer.jpg" alt="" loading="lazy"><div><small>Desszert</small><h3>Kajszibaracklekváros linzer</h3><button type="button" data-recipe="10" aria-label="Recept megnyitása: Kajszibaracklekváros linzer">Recept megnyitása →</button></div></article></div><aside class="chef-tip"><h3>Mit készíts elő, és mit hagyj a végére?</h3><ol><li><strong>Előző nap</strong> · Süsd meg és töltsd meg a linzert.</li><li><strong>Ebéd előtt</strong> · Készítsd el a levest, tálalás előtt pedig melegítsd át. A pirított tökmagot a végén szórd rá.</li><li><strong>Tálalás előtt</strong> · Tedd be a burgonyát a sütőbe. Amíg sül, készítsd el a karajt és az almás-mustáros szaftot. A főételt frissen tálald.</li></ol></aside></section>
 <section class="about" id="chef"><div class="wrap split"><img src="chef.jpg" alt="Chef munka közben egy konyhában" loading="lazy"><div><span class="kicker">Kristóf Chef</span><h2>A konyhában<br>otthon vagyok.</h2><p>Abban hiszek, hogy egy jó étel a piacon kezdődik. Megnézem, minek van szezonja, és abból indulok ki. Egy marék friss zöldfűszer, egy jól megpirított zöldség vagy pár csepp citrom sokszor éppen elég ahhoz, hogy összeálljon a fogás.</p><p>Itt azokat a recepteket gyűjtöm, amelyekhez szívesen visszatérek egy hétköznap este is. Olyan szezonális fogásokat mutatok, amelyeket otthon, könnyen beszerezhető alapanyagokból is elkészíthetsz.</p></div></div></section></main>
 <footer>A Chef asztala · Chef és receptek</footer>
@@ -31,7 +31,7 @@ const recipes=[
 {ready:"A burgonya széle aranybarna és ropogós, az almacikk megpuhult, de még egyben marad.","title":"Almás-mustáros sertéskaraj tepsis burgonyával","cat":"Főétel","time":50,"servings":"2 adag","image":"almas-mustaros-karaj.jpg","ingredients":["2 szelet csont nélküli sertéskaraj (összesen kb. 300 g)","500 g burgonya","1 nagy, enyhén savanykás alma","1 kis vöröshagyma","1 evőkanál magos mustár","1,5 dl alaplé","2 evőkanál olaj","Só, bors és kakukkfű"],"steps":["Vágd a burgonyát cikkekre, forgasd össze 1 evőkanál olajjal, sóval és kakukkfűvel. Süsd egy rétegben 210 °C-on 35–40 percig, félidőben fordítsd át.","Töröld szárazra a karajszeleteket, sózd és borsozd. A maradék olajon pirítsd meg mindkét oldalukat, majd tedd félre.","Ugyanabban a serpenyőben párold meg az apróra vágott hagymát, majd pirítsd meg az almacikkeket. Add hozzá a mustárt és az alaplevet, közben keverd fel a serpenyő aljáról a pirult részeket.","Tedd vissza a karajt a szaftba, és mérsékelt lángon fejezd be a sütést. Tálald az almás-mustáros szafttal és a tepsis burgonyával."],"tip":"Az almát héjastul vágd vastagabb cikkekre, hogy a szaftban is egyben maradjon."}
 ];
 const cards=document.querySelector('#cards'), dialog=document.querySelector('#recipe'), details=document.querySelector('#details');
-cards.innerHTML=recipes.map((r,i)=>`<article class="card" data-category="${r.cat}" data-time="${r.time}">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i}">Recept megnyitása →</button></div></article>`).join('');
+cards.innerHTML=recipes.map((r,i)=>`<article class="card" data-category="${r.cat}" data-time="${r.time}">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i}">Recept megnyitása →</button> <button type="button" data-save="${i}" aria-pressed="false" aria-label="${r.title} mentése">♡</button></div></article>`).join('');
 const recipeSlug=recipe=>recipe.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const quantityFormat=new Intl.NumberFormat('hu-HU',{maximumFractionDigits:2});
 const fractions={'½':0.5,'¼':0.25,'¾':0.75};
@@ -150,17 +150,35 @@ const results=document.querySelector('#recipe-results');
 const normalize=value=>value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 const searchable=recipes.map(recipe=>normalize([recipe.title,...recipe.ingredients].join(' ')));
 let category='';
+const savedRecipes=new Set();
+try {
+ const saved=JSON.parse(localStorage.getItem('chef-saved-recipes'));
+ if(Array.isArray(saved))saved.forEach(slug=>savedRecipes.add(slug));
+} catch {}
+cards.addEventListener('click',event=>{
+ const button=event.target.closest('[data-save]');
+ if(!button)return;
+ const slug=recipeSlug(recipes[Number(button.dataset.save)]);
+ if(savedRecipes.has(slug))savedRecipes.delete(slug);
+ else savedRecipes.add(slug);
+ try { localStorage.setItem('chef-saved-recipes',JSON.stringify([...savedRecipes])); } catch {}
+ applyFilters();
+});
 function applyFilters(){
  const terms=normalize(search.value).trim().split(/\s+/).filter(Boolean);
  let count=0;
  Array.from(cards.children).forEach((card,i)=>{
   const recipe=recipes[i];
-  const categoryMatches=category==='gyors' ? recipe.time<=30 : !category||recipe.cat===category;
-  card.hidden=!(categoryMatches&&(i!==0||terms.length>0)&&terms.every(term=>searchable[i].includes(term)));
+  const saved=savedRecipes.has(recipeSlug(recipe));
+  const heart=card.querySelector('[data-save]');
+  heart.textContent=saved?'♥':'♡';
+  heart.setAttribute('aria-pressed',String(saved));
+  const categoryMatches=category==='mentett' ? saved : category==='gyors' ? recipe.time<=30 : !category||recipe.cat===category;
+  card.hidden=!(categoryMatches&&(i!==0||terms.length>0||category==='mentett')&&terms.every(term=>searchable[i].includes(term)));
   if(!card.hidden)count++;
  });
  results.hidden=!terms.length&&count>0;
- results.textContent=count ? count+' találat' : 'Nincs találat. Próbálj másik keresőszót vagy kategóriát.';
+ results.textContent=count ? count+' találat' : category==='mentett'&&!terms.length ? 'Még nincs mentett recepted.' : 'Nincs találat. Próbálj másik keresőszót vagy kategóriát.';
 }
 filters.forEach(button=>button.addEventListener('click',()=>{
  filters.forEach(filter=>filter.setAttribute('aria-pressed',String(button===filter)));
