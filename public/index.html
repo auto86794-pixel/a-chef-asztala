@@ -30,11 +30,10 @@ const recipes=[
 ];
 const cards=document.querySelector('#cards'), dialog=document.querySelector('#recipe'), details=document.querySelector('#details');
 cards.innerHTML=recipes.map((r,i)=>`<article class="card" data-category="${r.cat}" data-time="${r.time}">${r.image ? `<img src="${r.image}" alt="" loading="lazy">` : ''}<div><small>${r.cat} · ${r.time} perc · ${r.servings??'2 adag'}</small><h3>${r.title}</h3><button type="button" data-recipe="${i}">Recept megnyitása →</button></div></article>`).join('');
-document.querySelector('main').addEventListener('click',event=>{
- const button=event.target.closest('[data-recipe]');
- if(!button)return;
- const r=recipes[Number(button.dataset.recipe)];
- details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><h3>Hozzávalók</h3><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3>Elkészítés</h3><ol>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3>Kristóf tippje</h3><p>${r.tip}</p></aside>`;
+const recipeSlug=recipe=>recipe.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+function openRecipe(r){
+ if(!r)return;
+ details.innerHTML=`<h2 id="recipe-title">${r.title}</h2><p>${r.time} perc · ${r.servings??'2 adag'}</p><button type="button" data-copy-recipe>Receptlink másolása</button><p role="status" data-copy-status></p><input aria-label="Megosztható receptlink" data-share-url readonly hidden><h3>Hozzávalók</h3><ul class="ingredients">${r.ingredients.map(item=>`<li><label><input type="checkbox"><span>${item}</span></label></li>`).join('')}</ul><button type="button" data-reset-ingredients>Újrakezdem</button><h3>Elkészítés</h3><ol>${r.steps.map(step=>`<li>${step}</li>`).join('')}</ol><h3>Így néz ki, amikor jó</h3><p>${r.ready}</p><aside class="chef-tip"><h3>Kristóf tippje</h3><p>${r.tip}</p></aside>`;
  const key='chef-ingredients:'+r.title;
  const boxes=Array.from(details.querySelectorAll('.ingredients input'));
  let checked=[];
@@ -53,8 +52,35 @@ document.querySelector('main').addEventListener('click',event=>{
   boxes.forEach(box=>{box.checked=false;});
   save();
  });
- dialog.showModal();
+ details.querySelector('[data-copy-recipe]').addEventListener('click',async()=>{
+  const url=new URL(location.href);
+  url.hash='recept='+recipeSlug(r);
+  const status=details.querySelector('[data-copy-status]');
+  try {
+   await navigator.clipboard.writeText(url.href);
+   status.textContent='A receptlinket kimásoltad.';
+  } catch {
+   const field=details.querySelector('[data-share-url]');
+   field.value=url.href;
+   field.hidden=false;
+   field.select();
+   status.textContent='Jelöld ki és másold a receptlinket.';
+  }
+ });
+ if(!dialog.open)dialog.showModal();
+}
+document.querySelector('main').addEventListener('click',event=>{
+ const button=event.target.closest('[data-recipe]');
+ if(button)openRecipe(recipes[Number(button.dataset.recipe)]);
 });
+function openLinkedRecipe(){
+ const prefix='#recept=';
+ if(!location.hash.startsWith(prefix))return;
+ const slug=location.hash.slice(prefix.length);
+ openRecipe(recipes.find(recipe=>recipeSlug(recipe)===slug));
+}
+window.addEventListener('hashchange',openLinkedRecipe);
+openLinkedRecipe();
 const filters=document.querySelectorAll('[data-cat]');
 const search=document.querySelector('#recipe-search');
 const results=document.querySelector('#recipe-results');
